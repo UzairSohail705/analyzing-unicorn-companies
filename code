@@ -1,0 +1,59 @@
+
+#In summary, the code retrieves the top 3 industries based on the count of records in the years 2019, 2020, and 2021. 
+It then calculates yearly rankings and average valuations for those industries. The final result presents the industry name, year, 
+count of records (num_unicorns), and the average valuation in billions for the specified years and top industries,
+sorted by year and count of records.
+
+#Defining the first CTE, in which we join industries with dates. We use this block of code to find the top 3 industries based on number
+of unicorns in the years 2019-2021. 
+
+WITH top_industries AS
+(
+    SELECT i.industry, 
+        COUNT(i.*)
+    FROM industries AS i
+    INNER JOIN dates AS d
+        ON i.company_id = d.company_id
+    WHERE EXTRACT(year FROM d.date_joined) in ('2019', '2020', '2021')
+    GROUP BY industry
+    ORDER BY count DESC
+    LIMIT 3
+),
+
+#This CTE retrieves the count of records in the "industries" table, the industry name, the year extracted from the "date_joined" column,
+and the average valuation from the "funding" table. It joins the "industries" table with the "dates" table on the "company_id" column
+and further joins the "dates" table with the "funding" table on the "company_id" column. 
+The result is grouped by the "industry" and "year" columns.
+  
+yearly_rankings AS 
+(
+    SELECT COUNT(i.*) AS num_unicorns,
+        i.industry,
+        EXTRACT(year FROM d.date_joined) AS year,
+        AVG(f.valuation) AS average_valuation
+    FROM industries AS i
+    INNER JOIN dates AS d
+        ON i.company_id = d.company_id
+    INNER JOIN funding AS f
+        ON d.company_id = f.company_id
+    GROUP BY industry, year
+)
+
+#Finally, the main query selects the "industry", "year", "num_unicorns" (count of records in the industry),
+and the rounded average valuation divided by 1 billion. The main query filters the result set by the years '2019', '2020', and '2021' 
+and restricts the industries to those selected in the "top_industries" CTE. The result is then grouped by "industry", "num_unicorns",
+and "year", and ordered by "year" in descending order followed by "num_unicorns" in descending order.
+
+SELECT industry,
+    year,
+    num_unicorns,
+    ROUND(AVG(average_valuation / 1000000000), 2) AS average_valuation_billions
+FROM yearly_rankings
+WHERE year in ('2019', '2020', '2021')
+    AND industry in (SELECT industry
+                    FROM top_industries)
+GROUP BY industry, num_unicorns, year
+ORDER BY year DESC, num_unicorns DESC
+
+
+
