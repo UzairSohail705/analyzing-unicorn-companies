@@ -1,7 +1,7 @@
-# Project Overview
+## Project Overview
 We will be analyzing data for different industries such as ecommerce and fintech etc to see which of these have the highest potential for growth. Valuation and funding of the companies will also be taken into account to get a gist of industry-specific financials. 
 
-# Tables
+## Tables
 There are 4 tables that are being used in the dataset. Here are they:
 ![1](https://github.com/UzairSohail705/analyzing-unicorn-companies/assets/137323836/bd196c7d-f320-40a9-af99-290c6700ff47)
 
@@ -10,7 +10,7 @@ There are 4 tables that are being used in the dataset. Here are they:
 
 
 
-# Insights
+## Insights
 It was observed that these were the 3 highest performing industries:
 
 -E-commerce
@@ -28,7 +28,7 @@ This is a tabluar representation of top-3 industries for the years 2019-2021:
 
 ![4](https://github.com/UzairSohail705/analyzing-unicorn-companies/assets/137323836/7a197312-8903-4c5c-89cc-7c9c66d1513a)
 
-# SQL concepts used
+## SQL concepts used
 
 1. Common Table Expressions (WITH function). This gives great functionality to define multiple tables within the main query.
 2. Joins, Aggregate functions
